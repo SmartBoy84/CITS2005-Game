@@ -132,15 +132,15 @@ public class GameTest extends Test {
         expect(false, game3.isOver());
 
         // below is a valid game state for 4x4, with two remaining spots
-        int[][] whiteMoves = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 }, { 1, 1 }, { 1, 3 }, { 2, 0 } }; // WIN: {0,3}
-        int[][] blackMoves = { { 1, 2 }, { 2, 1 }, { 2, 2 }, { 2, 3 }, { 3, 0 }, { 3, 1 }, { 3, 2 } }; // WIN: {3,3}
+        int[][] whiteMoves = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 }, { 1, 1 }, { 1, 2 } }; // WIN: {0,3}
+        int[][] blackMoves = { { 2, 1 }, { 2, 2 }, { 2, 3 }, { 3, 0 }, { 3, 2 }, { 3, 3 } }; // WIN: {3,1}
 
         for (int i = 0; i < whiteMoves.length; i++) {
             // intermediate behaviour already tested above (turn switching + invalid
             // accesses)
             game3.makeMove(new MoveImpl(whiteMoves[i][0], whiteMoves[i][1])); // white move
             game3.makeMove(new MoveImpl(blackMoves[i][0], blackMoves[i][1])); // black move
-            System.out.printf("%d. %s\n", i,game3.getMoves());
+            System.out.printf("%d. %s\n", i, game3.getMoves());
         }
 
         expect(false, game3.isOver());
@@ -154,21 +154,23 @@ public class GameTest extends Test {
         expect(true, endGameCopy1.isOver());
         expect(PieceColour.WHITE, endGameCopy1.winner());
         // TODO; now should I also move black into empty spot and check if winner state
-        // remains persistent?
+        // remains persistent? TODO: NO, undefined state?
 
         // test draw
         System.out.println("---- Testing draw");
         var endGameCopy2 = game3.copy();
-        endGameCopy2.makeMove(new MoveImpl(3, 3));
+        endGameCopy2.makeMove(new MoveImpl(3, 1));
 
         // technically, now drawn yet - one remaining move
         // TODO; correct assumption? or do I need to know pre-emptively
         expect(false, endGameCopy2.isOver());
         expect(PieceColour.NONE, endGameCopy2.winner());
 
-        endGameCopy2.makeMove(new MoveImpl(0, 3));
-        expect(true, endGameCopy2.isOver());
-        expect(PieceColour.NONE, endGameCopy2.winner());
+        // TODO; following tests are redundant - makeMove is undefined so it can mess
+        // whatever up however it wants after this point
+        // endGameCopy2.makeMove(new MoveImpl(0, 3));
+        // expect(true, endGameCopy2.isOver());
+        // expect(PieceColour.NONE, endGameCopy2.winner());
 
         checkAllTestsPassed();
     }

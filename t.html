@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grid Game Simulator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2em;
+            background-color: beige;
+        }
+
+        #grid {
+            display: grid;
+            gap: 2px;
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .empty {
+            background-color: lightgray;
+        }
+
+        .white {
+            background-color: white;
+        }
+
+        .black {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Grid Game Simulator</h1>
+    <div id="grid"></div>
+    <button onclick="exp()">Export</button>
+
+    <script>
+        const gridSize = 4;
+        const grid = document.getElementById('grid');
+        grid.style.gridTemplateColumns = `repeat(${gridSize}, 30px)`;
+
+        function exp() {
+            const cells = document.querySelectorAll(".cell");
+            const whiteMoves = [];
+            const blackMoves = [];
+
+            cells.forEach((cell, index) => {
+                const row = Math.floor(index / gridSize);
+                const col = index % gridSize;
+                const state = cell.dataset.state;
+
+                if (state === 'white') {
+                    whiteMoves.push([row, col]);
+                } else if (state === 'black') {
+                    blackMoves.push([row, col]);
+                }
+            });
+
+            console.log(`{${whiteMoves.map(a => `{${a[0]}, ${a[1]}}`).join(",")}}`)
+            console.log(`{${blackMoves.map(a => `{${a[0]}, ${a[1]}}`).join(",")}}`)
+            // console.log("White Moves:", whiteMoves);
+        }
+
+        for (let i = 0; i < gridSize * gridSize; i++) {
+            const cell = document.createElement('div');
+            cell.dataset.id = i
+            cell.className = "celly"
+            cell.className = 'cell empty';
+            cell.dataset.state = 'none';
+
+            cell.addEventListener('click', () => {
+                switch (cell.dataset.state) {
+                    case 'none':
+                        cell.className = 'cell white';
+                        cell.dataset.state = 'white';
+                        break;
+                    case 'white':
+                        cell.className = 'cell black';
+                        cell.dataset.state = 'black';
+                        break;
+                    case 'black':
+                        cell.className = 'cell empty';
+                        cell.dataset.state = 'none';
+                        break;
+                }
+            });
+
+            grid.appendChild(cell);
+        }
+    </script>
+
+</body>
+
+</html>
