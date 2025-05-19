@@ -23,6 +23,6 @@ public class MoveImpl implements Move {
     // override Object toString method
     @Override
     public String toString() {
-        return String.format("(%d,%d)", this.col, this.row);
+        return String.format("(%d,%d)", this.row, this.col);
     }
 }

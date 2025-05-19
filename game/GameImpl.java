@@ -17,11 +17,12 @@ public class GameImpl implements Game {
     // note all non-interface methods are marked private - they are implementation
     // details of the interface
 
-    // add method to initialise new game with given grid
-    // assume reference to pre-existing grid provided, rather than deep copy so
-    // .copy() method called here
+    // initialise new game with given grid - for copy() method
     private GameImpl(Grid grid, PieceColour currPlayer) {
         this.grid = grid.copy();
+        // assume grid passed as argument is a reference, rather than deep copy so
+        // .copy() method called here
+
         this.currPlayer = currPlayer;
     }
 
@@ -34,7 +35,8 @@ public class GameImpl implements Game {
         return getMoves().size() == 0;
     }
 
-    // check if a move is valid
+    // side note: method named as such so that if statements read "if (moveIsValid)"
+    // => if move is valid!
     private boolean moveIsValid(int row, int col) {
         // if move is out-of-bounds, IllegalArgumentException thrown by getPiece
         return grid.getPiece(row, col) == PieceColour.NONE;
@@ -51,11 +53,12 @@ public class GameImpl implements Game {
     // The colour of the winner.
     @Override
     public PieceColour winner() {
-        // if game ended in draw, currPlayer will be set to PieceColour.NONE
         if (checkWinner(PieceColour.WHITE))
             return PieceColour.WHITE;
+
         else if (checkWinner(PieceColour.BLACK))
             return PieceColour.BLACK;
+
         else
             return PieceColour.NONE; // drawn, or ongoing
     }
@@ -84,8 +87,7 @@ public class GameImpl implements Game {
     public void makeMove(Move move) throws IllegalArgumentException {
 
         /*
-         * the behaviour of this function is undefined, given that a winning state is
-         * reached
+         * when a winning state is reached, the behaviour of this function is undefined
          * the wording is slightly ambiguous, but I interpret it as meaning that I do
          * not need to handle persistence of winning state, once reached
          * so it is possible for white to win, but as my function permits black to then
@@ -93,9 +95,9 @@ public class GameImpl implements Game {
          * behaviour
          */
 
-        if (!moveIsValid(move.getRow(), move.getCol())) {
-            throw new IllegalArgumentException(String.format("(%d,%d) already occupied", move.getCol(), move.getRow()));
-        }
+        if (!moveIsValid(move.getRow(), move.getCol()))
+            throw new IllegalArgumentException(String.format("(%d,%d) already occupied", move.getRow(), move.getCol()));
+
         grid.setPiece(move.getRow(), move.getCol(), currPlayer);
 
         currPlayer = currPlayer == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
@@ -107,7 +109,7 @@ public class GameImpl implements Game {
         return grid.copy();
     }
 
-    // Returns a copy of the game
+    // Returns a copy of the game, using private constructor
     @Override
     public Game copy() {
         return new GameImpl(grid, currPlayer);
