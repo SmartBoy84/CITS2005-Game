@@ -7,7 +7,7 @@ public class PlayVsAI {
     public static void main(String[] args) {
         // By default, a board of size 5 is used
         // Increasing the size of the board will make the AI slower
-        Game game = new GameImpl(3);
+        Game game = new GameImpl(5);
 
         // Decrease the depth to make the AI faster, but less powerful
         // Increase the depth to make the AI slower, but more powerful

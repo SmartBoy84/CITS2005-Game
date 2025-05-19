@@ -1,7 +1,10 @@
-package game;
+
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import game.GameImpl;
+import game.Move;
 
 public class TesterMan {
     public static void main(String[] args) {
