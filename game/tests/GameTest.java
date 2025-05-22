@@ -17,7 +17,8 @@ public class GameTest extends Test {
     }
 
     public static ArrayList<String> getComparableMoveList(Collection<Move> moves) {
-        // not ideal; but the Game/Move interfaces are essentially immutable
+        // not ideal; but the Game/Move interfaces are essentially immutable in the
+        // context of this assignment
         ArrayList<String> moveSet = new ArrayList<>();
         for (Move m : moves)
             moveSet.add(String.format("%d,%d", m.getCol(), m.getRow()));
@@ -196,9 +197,6 @@ public class GameTest extends Test {
         expect(false, game4.isOver());
         expect(PieceColour.NONE, game4.winner());
 
-        // TODO; now should I also move black into empty spot and check if winner state
-        // remains persistent? TODO: NO, undefined state?
-
         // test draw
         System.out.println("---- Testing draw");
 
@@ -231,12 +229,6 @@ public class GameTest extends Test {
         expect(PieceColour.NONE, endGameCopy3.winner());
 
         // --- END OF TESTS
-
-        // TODO; following tests are redundant - makeMove is undefined so it can mess
-        // whatever up however it wants after this point
-        // endGameCopy2.makeMove(new MoveImpl(0, 3));
-        // expect(true, endGameCopy2.isOver());
-        // expect(PieceColour.NONE, endGameCopy2.winner());
 
         checkAllTestsPassed();
     }
